@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.min.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div x-data="{ sidebarOpen: false }" class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}" 
+         class="fixed inset-y-0 left-0 z-30 w-64 transform transition duration-300 ease-in-out md:translate-x-0 md:static md:inset-0">
+      <div class="flex flex-col h-full gradient-bg text-white shadow-lg">
+        <!-- Logo and user info -->
+        <div class="px-4 py-6 flex flex-col items-center border-b border-indigo-800">
+          <div class="h-20 w-20 rounded-full overflow-hidden border-4 border-white mb-3">
+            <img src="/api/placeholder/200/200" alt="Profile Picture" class="h-full w-full object-cover">
+          </div>
+          <h2 class="text-xl font-bold">John Doe</h2>
+          <p class="text-indigo-200 text-sm">Premium Member</p>
+        </div>
+        
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-2 py-4 space-y-2 overflow-y-auto">
+          <a href="#" class="flex items-center px-4 py-3 text-white bg-indigo-800 rounded-lg">
+            <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition duration-200">
+            <i class="fas fa-user-edit w-5 h-5 mr-3"></i>
+            <span>Edit Profile</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition duration-200">
+            <i class="fas fa-key w-5 h-5 mr-3"></i>
+            <span>Change Password</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition duration-200">
+            <i class="fas fa-redo-alt w-5 h-5 mr-3"></i>
+            <span>Reset Password</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition duration-200">
+            <i class="fas fa-cog w-5 h-5 mr-3"></i>
+            <span>Settings</span>
+          </a>
+          <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition duration-200">
+            <i class="fas fa-question-circle w-5 h-5 mr-3"></i>
+            <span>Help & Support</span>
+          </a>
+        </nav>
+        
+        <!-- Logout -->
+        <div class="p-4 border-t border-indigo-800">
+          <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition duration-200">
+            <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top Header -->
+      <header class="bg-white shadow-sm">
+        <div class="flex items-center justify-between px-6 py-4">
+          <!-- Mobile menu button -->
+          <button @click="sidebarOpen = !sidebarOpen" class="md:hidden text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+          
+          <h1 class="text-xl font-bold text-gray-800 md:text-2xl">My Dashboard</h1>
+          
+          <!-- Profile dropdown -->
+          <div class="relative" x-data="{ open: false }">
+            <button @click="open = !open" class="flex items-center focus:outline-none">
+              <span class="mr-2 text-sm hidden md:block">John Doe</span>
+              <div class="h-8 w-8 rounded-full overflow-hidden border-2 border-gray-200">
+                <img src="/api/placeholder/200/200" alt="Profile Picture" class="h-full w-full object-cover">
+              </div>
+            </button>
+            
+            <div x-show="open" @click.away="open = false" 
+                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+                 x-transition:enter="transition ease-out duration-100"
+                 x-transition:enter-start="transform opacity-0 scale-95"
+                 x-transition:enter-end="transform opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-75"
+                 x-transition:leave-start="transform opacity-100 scale-100"
+                 x-transition:leave-end="transform opacity-0 scale-95">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <!-- Welcome Banner -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="mb-4 md:mb-0">
+              <h2 class="text-2xl font-bold text-gray-800">Welcome back, John!</h2>
+              <p class="text-gray-600">Here's what's happening with your account today.</p>
+            </div>
+            <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center">
+              <i class="fas fa-plus mr-2"></i> Add New
+            </button>
+          </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover transition duration-300">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                <i class="fas fa-users text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-500 text-sm">Total Connections</p>
+                <p class="text-2xl font-bold text-gray-800">834</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="text-green-500 font-semibold text-sm">+7.4%</span>
+              <span class="text-gray-500 text-sm">from last week</span>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover transition duration-300">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                <i class="fas fa-chart-line text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-500 text-sm">Activity Score</p>
+                <p class="text-2xl font-bold text-gray-800">94.2%</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="text-green-500 font-semibold text-sm">+3.1%</span>
+              <span class="text-gray-500 text-sm">from last month</span>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover transition duration-300">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                <i class="fas fa-tasks text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-500 text-sm">Completed Tasks</p>
+                <p class="text-2xl font-bold text-gray-800">12/15</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg shadow-md p-6 card-hover transition duration-300">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                <i class="fas fa-trophy text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-500 text-sm">Achievement Points</p>
+                <p class="text-2xl font-bold text-gray-800">5,243</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="text-purple-500 font-semibold text-sm">Level 7</span>
+              <span class="text-gray-500 text-sm"> - 257 to next level</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Recent Activity</h3>
+            <a href="#" class="text-indigo-600 text-sm hover:text-indigo-800">View All</a>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition duration-200">
+              <div class="p-2 rounded-full bg-green-100 text-green-600 mr-4">
+                <i class="fas fa-user-edit"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-gray-800">You updated your profile picture</p>
+                <p class="text-gray-500 text-sm">2 hours ago</p>
+              </div>
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+            
+            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition duration-200">
+              <div class="p-2 rounded-full bg-blue-100 text-blue-600 mr-4">
+                <i class="fas fa-lock"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-gray-800">Password changed successfully</p>
+                <p class="text-gray-500 text-sm">Yesterday at 11:30 AM</p>
+              </div>
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+            
+            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition duration-200">
+              <div class="p-2 rounded-full bg-purple-100 text-purple-600 mr-4">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-gray-800">Earned "Early Adopter" badge</p>
+                <p class="text-gray-500 text-sm">3 days ago</p>
+              </div>
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+            
+            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition duration-200">
+              <div class="p-2 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-gray-800">Account upgraded to Premium</p>
+                <p class="text-gray-500 text-sm">1 week ago</p>
+              </div>
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Profile Completion -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Complete Your Profile</h3>
+            <span class="text-sm text-gray-500">75% Complete</span>
+          </div>
+          
+          <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+            <div class="bg-indigo-600 h-2 rounded-full" style="width: 75%"></div>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span class="text-gray-700">Profile Information</span>
+              </div>
+              <span class="text-green-500">Completed</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span class="text-gray-700">Account Security</span>
+              </div>
+              <span class="text-green-500">Completed</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div class="flex items-center">
+                <i class="fas fa-times-circle text-gray-400 mr-3"></i>
+                <span class="text-gray-700">Connect Social Accounts</span>
+              </div>
+              <button class="px-3 py-1 text-xs text-indigo-600 border border-indigo-600 rounded-md hover:bg-indigo-600 hover:text-white transition duration-200">
+                Connect
+              </button>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div class="flex items-center">
+                <i class="fas fa-times-circle text-gray-400 mr-3"></i>
+                <span class="text-gray-700">Verify Email Address</span>
+              </div>
+              <button class="px-3 py-1 text-xs text-indigo-600 border border-indigo-600 rounded-md hover:bg-indigo-600 hover:text-white transition duration-200">
+                Verify
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // You can add additional JavaScript functionality here
+  </script>
+</body>
+</html>
